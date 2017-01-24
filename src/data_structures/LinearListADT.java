@@ -1,9 +1,9 @@
 /*  Chris Moffett
-Your cssc account number
+cssc0274
 */
 
 package data_structures;
-
+import data_structures.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
