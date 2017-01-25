@@ -1,6 +1,8 @@
 /*  Chris Moffett
 cssc0274
 */
+import java.util.ArrayList; //remove
+
 import data_structures.ArrayLinearList;
 
 public class ArrayLinearTester {
@@ -9,17 +11,22 @@ public class ArrayLinearTester {
 	
 	public static void main(String [] args)
 	{
+		ArrayList<String> string = new ArrayList<>();
+		Object nope = new Object();
 		Object hello = new Object();
 		aList = new ArrayLinearList<>();
 		for (int i = 0; i < 100; i++){
 			aList.addFirst(hello);
+			//string.add("test");
 		}
+		aList.insert(nope, 60);
 		System.out.println("nope");
 
 		for (int j = 0; j < 75 ; j++){
 			aList.remove(24);
 		}
 		//aList.remove(60);
+		//string.clear();
 		System.out.println("nope");
 	}
 	

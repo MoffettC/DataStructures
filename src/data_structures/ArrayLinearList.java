@@ -77,8 +77,8 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	}
 
 	@Override
-	public E remove(int location) { //
-		if (location <= size + 1){
+	public E remove(int location) { //location one based
+		if ((location <= size + 1) && (size != 0)){
 			E obj = array[location - 1];
 			size--;
 			dynamicResize(false);
@@ -92,13 +92,16 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override
 	public E remove(E obj) { //dynamic resize needed, ordering perserved?
 		// TODO Auto-generated method stub
+		if (size != 0){
 		for (int i = 0; i < size; i++){
 			if (array[i].equals(obj)){
 				E temp = array[i];
 				size--;
+				dynamicResize(false);
 				shiftElements(i, false); //shift all elements down
 				return temp;
 			}
+		}
 		}
 		return null;
 	}
@@ -106,13 +109,12 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override 
 	public E removeFirst() { //dynamic resize needed, ordering perserved?
 		if (size != 0){
-			for(int i = 1; i < size; i++){
-				if (array[i] != null){
-					E temp = array[i];
-					array[i] = null;
-					size--;
-					return temp;
-				}
+			if (array[0] != null){
+				E temp = array[0];
+				size--;
+				dynamicResize(false);
+				shiftElements(0, false); //shift all elements down
+				return temp;
 			}
 		}
 		return null;
@@ -121,22 +123,21 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override
 	public E removeLast() { //dynamic resize needed, ordering perserved?
 		if (size != 0){
-			for(int i = size; i >= 1; i--){
-				if (array[i] != null){
-					E temp = array[i];
-					array[i] = null;
-					size--;
-					return temp;
-				}
+			if (array[size] != null){
+				E temp = array[size];
+				array[size] = null;
+				size--;
+				dynamicResize(false);
+				return temp;
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public E get(int location) {
+	public E get(int location) { //location one based
 		try {
-			E temp = array[location];
+			E temp = array[location - 1];
 			return temp;
 		} catch (RuntimeException e){
 
@@ -147,7 +148,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override
 	public boolean contains(E obj) {
 		if (size != 0){
-			for(int i = 1; i < size; i++){
+			for(int i = 0; i < size; i++){
 				if (array[i].equals(obj)){
 					return true;
 				}
