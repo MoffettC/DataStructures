@@ -4,9 +4,10 @@ cssc0274
 package data_structures;
 import data_structures.*;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayLinearList<E> implements LinearListADT<E>{
-	private int size = 0;
+	private int currentSize = 0;
 	private int currentCapacity = DEFAULT_MAX_CAPACITY;
 	private E[] array; //one based list
 
@@ -16,19 +17,19 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	public void dynamicResize(boolean isExpand){
 		if (isExpand){
-			if (size >= currentCapacity){
+			if (currentSize >= currentCapacity){
 				E[] temp = (E[]) new Object[currentCapacity * 2];
 				currentCapacity = currentCapacity * 2;
-				for (int i = 0; i < size; i++){
+				for (int i = 0; i < currentSize; i++){
 					temp[i] = array[i];
 				}
 				array = temp;
 			}
 		} else {
-			if (size <= (currentCapacity/4)){
+			if (currentSize <= (currentCapacity/4)){
 				E[] temp = (E[]) new Object[currentCapacity / 2];
 				currentCapacity = currentCapacity / 2;
-				for (int i = 0; i < size; i++){
+				for (int i = 0; i < currentSize; i++){
 					temp[i] = array[i];
 				}
 				array = temp;
@@ -38,11 +39,11 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	public void shiftElements(int begin, boolean toRight){
 		if (toRight){
-			for (int i = begin; i < size; i++){
+			for (int i = begin; i < currentSize; i++){
 				array[i + 1] = array[i];
 			}
 		} else {
-			for (int i = size; i >= begin; i--){
+			for (int i = currentSize; i >= begin; i--){
 				array[i] = array[i + 1];
 			}
 		}
@@ -50,13 +51,13 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public void addLast(E obj) { //
-		array[size++] = obj;  //add to end of list
+		array[currentSize++] = obj;  //add to end of list
 		dynamicResize(true);
 	}
 
 	@Override
 	public void addFirst(E obj) { //
-		size++;
+		currentSize++;
 		dynamicResize(true);
 		shiftElements(0, true); //shift all elements up
 		array[0] = obj; //always add to beginning
@@ -65,8 +66,8 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public void insert(E obj, int location) { //location one based
-		if (location <= size + 1){
-			size++;
+		if (location <= currentSize + 1){
+			currentSize++;
 			dynamicResize(true);
 			shiftElements(location-1, true); //shift all elements up
 			array[location-1] = obj;
@@ -78,9 +79,9 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E remove(int location) { //location one based
-		if ((location <= size + 1) && (size != 0)){
-			E obj = array[location - 1];
-			size--;
+		if ((location <= currentSize + 1) && (currentSize != 0)){
+			E obj = array[location - 1];  
+			currentSize--;
 			dynamicResize(false);
 			shiftElements(location-1, false); //shift all elements down
 			return obj;
@@ -92,26 +93,26 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override
 	public E remove(E obj) { //dynamic resize needed, ordering perserved?
 		// TODO Auto-generated method stub
-		if (size != 0){
-		for (int i = 0; i < size; i++){
-			if (array[i].equals(obj)){
-				E temp = array[i];
-				size--;
-				dynamicResize(false);
-				shiftElements(i, false); //shift all elements down
-				return temp;
+		if (currentSize != 0){
+			for (int i = 0; i < currentSize; i++){
+				if (array[i].equals(obj)){
+					E temp = array[i];
+					currentSize--;
+					dynamicResize(false);
+					shiftElements(i, false); //shift all elements down
+					return temp;
+				} 
 			}
-		}
 		}
 		return null;
 	}
 
 	@Override 
 	public E removeFirst() { //dynamic resize needed, ordering perserved?
-		if (size != 0){
+		if (currentSize != 0){
 			if (array[0] != null){
 				E temp = array[0];
-				size--;
+				currentSize--;
 				dynamicResize(false);
 				shiftElements(0, false); //shift all elements down
 				return temp;
@@ -122,11 +123,11 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E removeLast() { //dynamic resize needed, ordering perserved?
-		if (size != 0){
-			if (array[size] != null){
-				E temp = array[size];
-				array[size] = null;
-				size--;
+		if (currentSize != 0){
+			if (array[currentSize] != null){
+				E temp = array[currentSize];
+				array[currentSize] = null;
+				currentSize--;
 				dynamicResize(false);
 				return temp;
 			}
@@ -136,20 +137,19 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E get(int location) { //location one based
-		try {
 			E temp = array[location - 1];
 			return temp;
-		} catch (RuntimeException e){
 
-		}
-		return null;
+			//throw new RuntimeException();
+
+		//return null;
 	}
 
 	@Override
 	public boolean contains(E obj) {
-		if (size != 0){
-			for(int i = 0; i < size; i++){
-				if (array[i].equals(obj)){
+		if (currentSize != 0){
+			for (int i = 0; i < currentSize; i++){
+				if (((Comparable<E>)obj).compareTo(array[i]) == 0){
 					return true;
 				}
 			}
@@ -159,10 +159,10 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public int locate(E obj) {
-		if (size != 0){
-			for(int i = 1; i < size; i++){
-				if (array[i].equals(obj)){
-					return i;
+		if (currentSize != 0){
+			for(int i = 0; i < currentSize; i++){
+				if (((Comparable<E>)obj).compareTo(array[i]) == 0){
+					return i+1; //one based location
 				}
 			}
 		}
@@ -171,12 +171,12 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public void clear() {
-		size = 0;
+		currentSize = 0;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		if (size == 0){
+		if (currentSize == 0){
 			return true;
 		} else {
 			return false;
@@ -185,28 +185,39 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public int size() {
-		return size;
+		return currentSize;
 	}
 
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		Iterator<E> itr = new Iterator<E>(){
-
-			@Override
-			public boolean hasNext() {
-				// TODO Auto-generated method stub
+		return new IteratorHelper();
+	}
+	
+	class IteratorHelper implements Iterator<E>{
+		int itrIndex;
+		
+		public IteratorHelper(){
+			itrIndex = 0;
+		}
+		
+		public boolean hasNext(){
+			if(itrIndex < currentSize){
+				return true;
+			} else {
 				return false;
 			}
-
-			@Override
-			public E next() {
-				// TODO Auto-generated method stub
-				return null;
+		}
+		
+		public E next(){
+			if (!hasNext()){
+				throw new NoSuchElementException();
 			}
-
-		};
-		return null;
+			return array[itrIndex++];
+		}
+		
+		public void remove(){
+			throw new UnsupportedOperationException();
+		}
 	}
 
 }
