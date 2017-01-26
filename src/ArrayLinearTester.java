@@ -13,17 +13,24 @@ public class ArrayLinearTester {
 	{
 		ArrayList<String> string = new ArrayList<>();
 		Object nope = new Object();
-		Object hello = new Object();
+		//Object hello = new Object();
 		aList = new ArrayLinearList<>();
+		
+		aList.addFirst(2);
+		aList.addFirst(4);
+		aList.addFirst(6);
+
+		
 		for (int i = 0; i < 100; i++){
-			aList.addFirst(hello);
-			//string.add("test");
+			aList.addFirst(i);
 		}
+		
 		aList.insert(nope, 60);
 		System.out.println("nope");
 
-		for (int j = 0; j < 75 ; j++){
-			aList.remove(24);
+		for (int j = 0; j < 101 ; j++){
+			//aList.remove(24);
+			aList.removeFirst();
 		}
 		//aList.remove(60);
 		//string.clear();

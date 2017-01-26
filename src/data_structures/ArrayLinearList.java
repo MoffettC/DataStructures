@@ -26,7 +26,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 				array = temp;
 			}
 		} else {
-			if (currentSize <= (currentCapacity/4)){
+			if ((currentSize <= (currentCapacity/4)) && currentSize > DEFAULT_MAX_CAPACITY){
 				E[] temp = (E[]) new Object[currentCapacity / 2];
 				currentCapacity = currentCapacity / 2;
 				for (int i = 0; i < currentSize; i++){
@@ -39,11 +39,11 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	public void shiftElements(int begin, boolean toRight){
 		if (toRight){
-			for (int i = begin; i < currentSize; i++){
-				array[i + 1] = array[i];
+			for (int i = currentSize; i >= begin; i--){
+				array[i - 1] = array[i];
 			}
 		} else {
-			for (int i = currentSize; i >= begin; i--){
+			for (int i = begin; i < currentSize; i++){
 				array[i] = array[i + 1];
 			}
 		}
@@ -66,20 +66,20 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public void insert(E obj, int location) { //location one based
-		if (location <= currentSize + 1){
+		if (location-1 < currentSize){
 			currentSize++;
 			dynamicResize(true);
 			shiftElements(location-1, true); //shift all elements up
 			array[location-1] = obj;
 		} else {
-			throw new RuntimeException("Index is not contiguous");
+			throw new RuntimeException("Index is not within contiguous list");
 		}
 
 	}
 
 	@Override
 	public E remove(int location) { //location one based
-		if ((location <= currentSize + 1) && (currentSize != 0)){
+		if ((location-1 < currentSize) && (currentSize != 0)){
 			E obj = array[location - 1];  
 			currentSize--;
 			dynamicResize(false);
@@ -95,7 +95,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 		// TODO Auto-generated method stub
 		if (currentSize != 0){
 			for (int i = 0; i < currentSize; i++){
-				if (array[i].equals(obj)){
+				if (((Comparable<E>)obj).compareTo(array[i]) == 0){
 					E temp = array[i];
 					currentSize--;
 					dynamicResize(false);
@@ -124,9 +124,9 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override
 	public E removeLast() { //dynamic resize needed, ordering perserved?
 		if (currentSize != 0){
-			if (array[currentSize] != null){
-				E temp = array[currentSize];
-				array[currentSize] = null;
+			if (array[currentSize-1] != null){
+				E temp = array[currentSize-1];
+				array[currentSize-1] = null;
 				currentSize--;
 				dynamicResize(false);
 				return temp;
@@ -137,12 +137,12 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E get(int location) { //location one based
+		if (location-1 < currentSize){
 			E temp = array[location - 1];
 			return temp;
-
-			//throw new RuntimeException();
-
-		//return null;
+		} else {
+			throw new RuntimeException("Index is out of bounds");
+		}		
 	}
 
 	@Override
