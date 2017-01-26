@@ -39,8 +39,8 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	public void shiftElements(int begin, boolean toRight){
 		if (toRight){
-			for (int i = currentSize; i >= begin; i--){
-				array[i - 1] = array[i];
+			for (int i = currentSize; i > begin; i--){
+				array[i] = array[i - 1];
 			}
 		} else {
 			for (int i = begin; i < currentSize; i++){

@@ -28,7 +28,7 @@ public class ArrayLinearTester {
 		aList.insert(nope, 60);
 		System.out.println("nope");
 
-		for (int j = 0; j < 101 ; j++){
+		for (int j = 0; j < 104 ; j++){
 			//aList.remove(24);
 			aList.removeFirst();
 		}
