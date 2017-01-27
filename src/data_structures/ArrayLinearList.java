@@ -18,18 +18,18 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	public void dynamicResize(boolean isExpand){
 		if (isExpand){
 			if (currentSize >= currentCapacity){
-				E[] temp = (E[]) new Object[currentCapacity * 2];
 				currentCapacity = currentCapacity * 2;
+				E[] temp = (E[]) new Object[currentCapacity];
 				for (int i = 0; i < currentSize; i++){
 					temp[i] = array[i];
 				}
 				array = temp;
 			}
 		} else {
-			if ((currentSize <= (currentCapacity/4)) && currentSize > DEFAULT_MAX_CAPACITY){
-				E[] temp = (E[]) new Object[currentCapacity / 2];
+			if ((currentSize < (currentCapacity/4)) && currentCapacity > DEFAULT_MAX_CAPACITY){
 				currentCapacity = currentCapacity / 2;
-				for (int i = 0; i < currentSize; i++){
+				E[] temp = (E[]) new Object[currentCapacity];
+				for (int i = 0; i < currentSize + 1; i++){ //currentSize+1 needed to cover the case where array gets reduced, but outside index needs to get copied
 					temp[i] = array[i];
 				}
 				array = temp;
@@ -95,7 +95,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 		// TODO Auto-generated method stub
 		if (currentSize != 0){
 			for (int i = 0; i < currentSize; i++){
-				if (((Comparable<E>)obj).compareTo(array[i]) == 0){
+				if (((Comparable<E>) obj).compareTo(array[i]) == 0){
 					E temp = array[i];
 					currentSize--;
 					dynamicResize(false);
@@ -161,7 +161,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	public int locate(E obj) {
 		if (currentSize != 0){
 			for(int i = 0; i < currentSize; i++){
-				if (((Comparable<E>)obj).compareTo(array[i]) == 0){
+				if (((Comparable<E>) obj).compareTo(array[i]) == 0){
 					return i+1; //one based location
 				}
 			}
@@ -219,5 +219,4 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 			throw new UnsupportedOperationException();
 		}
 	}
-
 }
