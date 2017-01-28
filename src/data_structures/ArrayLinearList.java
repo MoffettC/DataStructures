@@ -2,9 +2,7 @@
 cssc0274
  */
 package data_structures;
-import data_structures.*;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class ArrayLinearList<E> implements LinearListADT<E>{
 	private int currentSize = 0;
@@ -12,7 +10,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	private E[] array; //one based list
 
 	public ArrayLinearList(){
-		array = (E[]) new Object[DEFAULT_MAX_CAPACITY]; //one based list
+		array = (E[]) new Object[DEFAULT_MAX_CAPACITY]; 
 	}
 
 	public void dynamicResize(boolean isExpand){
@@ -92,7 +90,6 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E remove(E obj) { //dynamic resize needed, ordering perserved?
-		// TODO Auto-generated method stub
 		if (currentSize != 0){
 			for (int i = 0; i < currentSize; i++){
 				if (((Comparable<E>) obj).compareTo(array[i]) == 0){
@@ -110,13 +107,11 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override 
 	public E removeFirst() { //dynamic resize needed, ordering perserved?
 		if (currentSize != 0){
-			if (array[0] != null){
-				E temp = array[0];
-				currentSize--;
-				dynamicResize(false);
-				shiftElements(0, false); //shift all elements down
-				return temp;
-			}
+			E temp = array[0];
+			currentSize--;
+			dynamicResize(false);
+			shiftElements(0, false); //shift all elements down
+			return temp;
 		}
 		return null;
 	}
@@ -124,13 +119,10 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	@Override
 	public E removeLast() { //dynamic resize needed, ordering perserved?
 		if (currentSize != 0){
-			if (array[currentSize-1] != null){
-				E temp = array[currentSize-1];
-				array[currentSize-1] = null;
-				currentSize--;
-				dynamicResize(false);
-				return temp;
-			}
+			E temp = array[currentSize-1];
+			currentSize--;
+			dynamicResize(false);
+			return temp;
 		}
 		return null;
 	}
@@ -176,11 +168,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public boolean isEmpty() {
-		if (currentSize == 0){
-			return true;
-		} else {
-			return false;
-		}
+		return currentSize == 0;
 	}
 
 	@Override
@@ -192,14 +180,14 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	public Iterator<E> iterator() {
 		return new IteratorHelper();
 	}
-	
+
 	class IteratorHelper implements Iterator<E>{
 		int itrIndex;
-		
+
 		public IteratorHelper(){
 			itrIndex = 0;
 		}
-		
+
 		public boolean hasNext(){
 			if(itrIndex < currentSize){
 				return true;
@@ -207,14 +195,14 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 				return false;
 			}
 		}
-		
+
 		public E next(){
 			if (!hasNext()){
 				throw new NoSuchElementException();
 			}
 			return array[itrIndex++];
 		}
-		
+
 		public void remove(){
 			throw new UnsupportedOperationException();
 		}

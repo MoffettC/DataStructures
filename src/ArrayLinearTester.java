@@ -1,14 +1,14 @@
 /*  Chris Moffett
 cssc0274
 */
-import java.util.ArrayList; //remove
-import java.util.Iterator;
+//remove
+import java.util.*;
 
-import data_structures.ArrayLinearList;
+import data_structures.*;
 
 public class ArrayLinearTester {
 
-	private static ArrayLinearList<String> aList;
+	private static ArrayLinearList<Object> aList;
 	
 	public static void main(String [] args)
 	{ 
@@ -26,6 +26,7 @@ public class ArrayLinearTester {
 			aList.addFirst(String.format("Loop %d", i));
 		}
 		aList.addLast("9999");
+		//aList.removeLast();
 		
 		//Insert Remove
 		aList.insert("nope", 60);
@@ -33,12 +34,15 @@ public class ArrayLinearTester {
 		aList.remove("nope");
 		
 		//Remove First,Last,Obj,Location
-		for (int j = 0; j < 100; j++){
+		for (int j = 0; j < 50; j++){
 			aList.removeFirst();
 		}	
-		aList.removeLast();
-		aList.remove(1);
+		
+		aList.removeFirst();
+		aList.removeFirst();
 		aList.remove("4");
+		//aList.removeLast();
+		aList.remove(1);
 		
 		//Misc Commands
 		boolean test = aList.contains("2");
@@ -47,10 +51,11 @@ public class ArrayLinearTester {
 		Object test4 = aList.get(1);
 		int test5 = aList.size();
 		
+		
 		//Iterators
-		Iterator<String> itr = aList.iterator();
+		Iterator<Object> itr = aList.iterator();
 		while(itr.hasNext()){
-			String s = itr.next();
+			Object s = itr.next();
 			System.out.println(s);
 		}
 		
