@@ -24,7 +24,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 				array = temp;
 			}
 		} else {
-			if ((currentSize < (currentCapacity/4)) && currentCapacity > DEFAULT_MAX_CAPACITY){
+			if (currentSize < (currentCapacity/4)){
 				currentCapacity = currentCapacity / 2;
 				E[] temp = (E[]) new Object[currentCapacity];
 				for (int i = 0; i < currentSize + 1; i++){ //currentSize+1 needed to cover the case where array gets reduced, but outside index needs to get copied
@@ -48,13 +48,13 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	}
 
 	@Override
-	public void addLast(E obj) { //
+	public void addLast(E obj) { 
 		array[currentSize++] = obj;  //add to end of list
 		dynamicResize(true);
 	}
 
 	@Override
-	public void addFirst(E obj) { //
+	public void addFirst(E obj) { 
 		currentSize++;
 		dynamicResize(true);
 		shiftElements(0, true); //shift all elements up
@@ -64,11 +64,12 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public void insert(E obj, int location) { //location one based
-		if (location-1 < currentSize){
+		location = location-1;
+		if (location <= currentSize && location >= 0){ //needs to include 1 outside of array index
 			currentSize++;
 			dynamicResize(true);
-			shiftElements(location-1, true); //shift all elements up
-			array[location-1] = obj;
+			shiftElements(location, true); //shift all elements up
+			array[location] = obj;
 		} else {
 			throw new RuntimeException("Index is not within contiguous list");
 		}
@@ -77,20 +78,21 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E remove(int location) { //location one based
-		if ((location-1 < currentSize) && (currentSize != 0)){
-			E obj = array[location - 1];  
+		location = location-1;
+		if (location < currentSize && location >= 0 && !isEmpty()){
+			E obj = array[location];  
 			currentSize--;
 			dynamicResize(false);
-			shiftElements(location-1, false); //shift all elements down
+			shiftElements(location, false); //shift all elements down
 			return obj;
 		} else {
-			throw new RuntimeException("Index is not within list");
+			throw new RuntimeException("Index is not within contiguous list");
 		}
 	}
 
 	@Override
-	public E remove(E obj) { //dynamic resize needed, ordering perserved?
-		if (currentSize != 0){
+	public E remove(E obj) { 
+		if (!isEmpty()){
 			for (int i = 0; i < currentSize; i++){
 				if (((Comparable<E>) obj).compareTo(array[i]) == 0){
 					E temp = array[i];
@@ -106,7 +108,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override 
 	public E removeFirst() { //dynamic resize needed, ordering perserved?
-		if (currentSize != 0){
+		if (!isEmpty()){
 			E temp = array[0];
 			currentSize--;
 			dynamicResize(false);
@@ -118,9 +120,8 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E removeLast() { //dynamic resize needed, ordering perserved?
-		if (currentSize != 0){
-			E temp = array[currentSize-1];
-			currentSize--;
+		if (!isEmpty()){
+			E temp = array[--currentSize];
 			dynamicResize(false);
 			return temp;
 		}
@@ -129,17 +130,17 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public E get(int location) { //location one based
-		if (location-1 < currentSize){
-			E temp = array[location - 1];
-			return temp;
+		location = location-1;
+		if (location < currentSize && location >= 0 && !isEmpty()){
+			return array[location];
 		} else {
-			throw new RuntimeException("Index is out of bounds");
+			throw new RuntimeException("Index is not within contiguous list");
 		}		
 	}
 
 	@Override
 	public boolean contains(E obj) {
-		if (currentSize != 0){
+		if (!isEmpty()){
 			for (int i = 0; i < currentSize; i++){
 				if (((Comparable<E>)obj).compareTo(array[i]) == 0){
 					return true;
@@ -151,7 +152,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 
 	@Override
 	public int locate(E obj) {
-		if (currentSize != 0){
+		if (!isEmpty()){
 			for(int i = 0; i < currentSize; i++){
 				if (((Comparable<E>) obj).compareTo(array[i]) == 0){
 					return i+1; //one based location
@@ -189,11 +190,7 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 		}
 
 		public boolean hasNext(){
-			if(itrIndex < currentSize){
-				return true;
-			} else {
-				return false;
-			}
+			return itrIndex < currentSize;
 		}
 
 		public E next(){

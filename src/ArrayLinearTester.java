@@ -22,8 +22,10 @@ public class ArrayLinearTester {
 		aList.addFirst("6");
 		aList.addLast("8");
 	
-		for (int i = 0; i < 100; i++){
-			aList.addFirst(String.format("Loop %d", i));
+		for (int i = 0; i < 1000000; i++){
+			//aList.addFirst(String.format("Loop %d", i));
+			aList.addLast(String.format("Loop %d", i));
+
 		}
 		aList.addLast("9999");
 		//aList.removeLast();
@@ -34,14 +36,15 @@ public class ArrayLinearTester {
 		aList.remove("nope");
 		
 		//Remove First,Last,Obj,Location
-		for (int j = 0; j < 50; j++){
-			aList.removeFirst();
+		for (int j = 0; j < 1000000; j++){
+			//aList.removeFirst();
+			aList.removeLast();
 		}	
 		
 		aList.removeFirst();
 		aList.removeFirst();
-		aList.remove("4");
-		//aList.removeLast();
+		aList.remove("8");
+		aList.removeLast();
 		aList.remove(1);
 		
 		//Misc Commands
