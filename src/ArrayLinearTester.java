@@ -1,7 +1,6 @@
 /*  Chris Moffett
-cssc0274
-*/
-//remove
+	cssc0937
+ */
 import java.util.*;
 
 import data_structures.*;
@@ -12,7 +11,6 @@ public class ArrayLinearTester {
 	
 	public static void main(String [] args)
 	{ 
-		Object nope = new Object();
 		//Object hello = new Object();
 		aList = new ArrayLinearList<>();
 		
@@ -21,13 +19,21 @@ public class ArrayLinearTester {
 		aList.addFirst("4");
 		aList.addFirst("6");
 		aList.addLast("8");
-	
-		for (int i = 0; i < 1000000; i++){
+		aList.addLast("9999");	
+		
+		aList.removeLast();
+		aList.removeLast();
+		
+		for (int i = 0; i < 1000; i++){
 			//aList.addFirst(String.format("Loop %d", i));
 			aList.addLast(String.format("Loop %d", i));
 
 		}
-		aList.addLast("9999");
+		Integer test31 = new Integer(9000);
+		//aList.locate("0");
+		//aList.contains(test31);
+		System.out.println(aList.get(1));
+		System.out.println(aList.get(999));
 		//aList.removeLast();
 		
 		//Insert Remove
@@ -36,13 +42,13 @@ public class ArrayLinearTester {
 		aList.remove("nope");
 		
 		//Remove First,Last,Obj,Location
-		for (int j = 0; j < 1000000; j++){
+		for (int j = 0; j < 1000; j++){
 			//aList.removeFirst();
 			aList.removeLast();
 		}	
 		
 		aList.removeFirst();
-		aList.removeFirst();
+		//aList.removeFirst();
 		aList.remove("8");
 		aList.removeLast();
 		aList.remove(1);
@@ -51,15 +57,16 @@ public class ArrayLinearTester {
 		boolean test = aList.contains("2");
 		boolean test2 = aList.isEmpty();
 		int test3 = aList.locate("9999");
-		Object test4 = aList.get(1);
+		//Object test4 = aList.get(1);
 		int test5 = aList.size();
 		
-		
+		String nope = new String("hi");
+		aList.addFirst(nope);
 		//Iterators
 		Iterator<Object> itr = aList.iterator();
 		while(itr.hasNext()){
-			Object s = itr.next();
-			System.out.println(s);
+			String s = (String) itr.next();
+			System.out.println("Itr: " + s);
 		}
 		
 		//Clear

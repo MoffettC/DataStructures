@@ -1,8 +1,10 @@
 /*  Chris Moffett
-cssc0274
+	cssc0937
  */
+
 package data_structures;
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayLinearList<E> implements LinearListADT<E>{
 	private int currentSize = 0;
@@ -13,53 +15,49 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 		array = (E[]) new Object[DEFAULT_MAX_CAPACITY]; 
 	}
 
-	public void dynamicResize(boolean isExpand){
-		if (isExpand){
-			if (currentSize >= currentCapacity){
-				currentCapacity = currentCapacity * 2;
-				E[] temp = (E[]) new Object[currentCapacity];
-				for (int i = 0; i < currentSize; i++){
-					temp[i] = array[i];
-				}
-				array = temp;
+	private void expandArray(){
+		if (currentSize >= currentCapacity){
+			currentCapacity = currentCapacity * 2;
+			E[] temp = (E[]) new Object[currentCapacity];
+			for (int i = 0; i < currentSize; i++){
+				temp[i] = array[i];
 			}
-		} else {
-			if (currentSize < (currentCapacity/4)){
-				currentCapacity = currentCapacity / 2;
-				E[] temp = (E[]) new Object[currentCapacity];
-				for (int i = 0; i < currentSize + 1; i++){ //currentSize+1 needed to cover the case where array gets reduced, but outside index needs to get copied
-					temp[i] = array[i];
-				}
-				array = temp;
+			array = temp;
+		}
+
+	}
+
+	private void shrinkArray(){
+		if (currentSize < (currentCapacity/4)){
+			currentCapacity = currentCapacity / 2;
+			E[] temp = (E[]) new Object[currentCapacity];
+			for (int i = 0; i < currentSize + 1; i++){ //currentSize+1 needed to cover where array gets reduced, but outside index needs to get copied
+				temp[i] = array[i];
 			}
+			array = temp;
 		}
 	}
 
-	public void shiftElements(int begin, boolean toRight){
-		if (toRight){
-			for (int i = currentSize; i > begin; i--){
-				array[i] = array[i - 1];
-			}
-		} else {
-			for (int i = begin; i < currentSize; i++){
-				array[i] = array[i + 1];
-			}
+	private void shiftElementsRight(int begin){
+		for (int i = currentSize; i > begin; i--){
+			array[i] = array[i - 1];
+		}
+	}
+
+	private void shiftElementsLeft(int begin){
+		for (int i = begin; i < currentSize; i++){
+			array[i] = array[i + 1];
 		}
 	}
 
 	@Override
 	public void addLast(E obj) { 
-		array[currentSize++] = obj;  //add to end of list
-		dynamicResize(true);
+		insert(obj, currentSize+1); //add outside of array
 	}
 
 	@Override
 	public void addFirst(E obj) { 
-		currentSize++;
-		dynamicResize(true);
-		shiftElements(0, true); //shift all elements up
-		array[0] = obj; //always add to beginning
-
+		insert(obj, 1); 
 	}
 
 	@Override
@@ -67,8 +65,8 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 		location = location-1;
 		if (location <= currentSize && location >= 0){ //needs to include 1 outside of array index
 			currentSize++;
-			dynamicResize(true);
-			shiftElements(location, true); //shift all elements up
+			expandArray();
+			shiftElementsRight(location); 
 			array[location] = obj;
 		} else {
 			throw new RuntimeException("Index is not within contiguous list");
@@ -82,8 +80,8 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 		if (location < currentSize && location >= 0 && !isEmpty()){
 			E obj = array[location];  
 			currentSize--;
-			dynamicResize(false);
-			shiftElements(location, false); //shift all elements down
+			shrinkArray();
+			shiftElementsLeft(location); 
 			return obj;
 		} else {
 			throw new RuntimeException("Index is not within contiguous list");
@@ -97,8 +95,8 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 				if (((Comparable<E>) obj).compareTo(array[i]) == 0){
 					E temp = array[i];
 					currentSize--;
-					dynamicResize(false);
-					shiftElements(i, false); //shift all elements down
+					shrinkArray();
+					shiftElementsLeft(i);
 					return temp;
 				} 
 			}
@@ -107,25 +105,13 @@ public class ArrayLinearList<E> implements LinearListADT<E>{
 	}
 
 	@Override 
-	public E removeFirst() { //dynamic resize needed, ordering perserved?
-		if (!isEmpty()){
-			E temp = array[0];
-			currentSize--;
-			dynamicResize(false);
-			shiftElements(0, false); //shift all elements down
-			return temp;
-		}
-		return null;
+	public E removeFirst() {
+		return remove(1);
 	}
 
 	@Override
-	public E removeLast() { //dynamic resize needed, ordering perserved?
-		if (!isEmpty()){
-			E temp = array[--currentSize];
-			dynamicResize(false);
-			return temp;
-		}
-		return null;
+	public E removeLast() { 
+		return remove(currentSize);
 	}
 
 	@Override

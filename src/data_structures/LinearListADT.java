@@ -1,6 +1,6 @@
 /*  Chris Moffett
-cssc0274
-*/
+	cssc0937
+ */
 
 package data_structures;
 import java.util.Iterator;
