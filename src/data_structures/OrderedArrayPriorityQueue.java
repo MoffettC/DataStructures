@@ -27,7 +27,7 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 		this(DEFAULT_MAX_CAPACITY);
 	}
 
-	public boolean insert(Comparable obj) {
+	public boolean insert(Comparable obj) { //FIFO starting at end of array going back
 		if (isFull()){
 			return false;
 		}
@@ -41,7 +41,7 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 		return true;
 	}
 
-	public Comparable remove() {
+	public Comparable remove() { //remove from end of array, FIFO
 		if(isEmpty()){
 			return null;
 		}

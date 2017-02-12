@@ -29,7 +29,7 @@ public class UnorderedArrayPriorityQueue<E> implements PriorityQueue {
 	public boolean insert(Comparable obj) {
 		if (isFull()) { return false; }
 		
-		storage[currentSize++] = (Comparable) obj; //always add to end, order doesnt matter	
+		storage[currentSize--] = (Comparable) obj; //always add to end, grow towards beginning, order doesnt matter	
 		modCounter++;
 		return true;
 	}
