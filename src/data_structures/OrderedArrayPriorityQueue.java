@@ -1,63 +1,149 @@
+/*  Chris Moffett
+	cssc0937
+ */
 package data_structures;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.LinkedList; //ERASE
+import java.util.NoSuchElementException;
 
-public class OrderedArrayPriorityQueue implements PriorityQueue{
+public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 
-	LinkedList<Integer> list = new LinkedList<>();
-	@Override
-	public boolean insert(Comparable object) {
-		// TODO Auto-generated method stub
-		return false;
+	private Comparable[] storage;
+	private int currentSize;
+	private int maxSize;
+	private long modCounter;
+	private boolean isFound;
+
+	public OrderedArrayPriorityQueue(int size){
+		maxSize = size;
+		storage = (Comparable[]) new Object[maxSize];
+		currentSize = 0;
+		modCounter = 0;
+		isFound = false;
 	}
 
-	@Override
+	public OrderedArrayPriorityQueue(){
+		this(DEFAULT_MAX_CAPACITY);
+	}
+
+	public boolean insert(Comparable obj) {
+		if (isFull()){
+			return false;
+		}
+		int where = findInsertionPoint(obj, 0, currentSize-1);
+		for (int i = currentSize-1; i>=where; i--){
+			storage[i+1] = storage[i];
+		}
+		storage[where] = (Comparable) obj;
+		currentSize++;
+		modCounter++;
+		return true;
+	}
+
 	public Comparable remove() {
-		// TODO Auto-generated method stub
+		if(isEmpty()){
+			return null;
+		}
+		modCounter++;
+		return (Comparable) storage[--currentSize];
+	}
+
+	public Comparable peek() { //change to binary search
+		if (!isEmpty()){
+			Comparable bestSoFar = (Comparable) storage[0];
+			for (int i = 1; i < currentSize; i++){
+				if (storage[i].compareTo(bestSoFar) < 0){
+					bestSoFar = storage[i];
+				}
+			}
+			return (Comparable) bestSoFar;
+		}
 		return null;
 	}
 
-	@Override
-	public Comparable peek() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean contains(Comparable obj) {
-		// TODO Auto-generated method stub
-		return false;
+		int check = searchForElement(obj, 0, currentSize-1);
+		if (check < 0){
+			return false;
+		}
+		return true;
 	}
 
-	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return currentSize;
 	}
 
-	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		currentSize = 0;		
 	}
 
-	@Override
+
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return currentSize == 0;
 	}
 
-	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
-		return false;
+		return currentSize == maxSize;
 	}
 
-	@Override
-	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterator<E> iterator() {
+		return new IteratorHelper();
 	}
 
+	class IteratorHelper implements Iterator<E>{
+		int itrIndex;
+		long modCheck;
+
+		public IteratorHelper(){
+			itrIndex = 0;
+			modCheck = modCounter;
+		}
+
+		public boolean hasNext(){
+			return itrIndex < currentSize;
+		}
+
+		public E next(){
+			if (!hasNext()){
+				throw new NoSuchElementException();
+			}
+			if (modCheck != modCounter){
+				throw new ConcurrentModificationException();
+			}
+			return (E) storage[itrIndex++];
+		}
+
+		public void remove(){
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	private int findInsertionPoint(Comparable object, int lo, int hi){
+		if(hi < lo){
+			return lo;
+		}
+
+		int mid = (lo+hi) >> 1;
+
+		if (((Comparable<E>)object).compareTo((E) storage[mid]) >= 0){
+			return findInsertionPoint(object, lo, mid-1); //go left
+		}
+		return findInsertionPoint(object, mid+1, hi); //go right
+	}
+
+	private int searchForElement(Comparable object, int lo, int hi){
+		if(hi < lo){
+			return -1;
+		}
+
+		int mid = (lo+hi) >> 1; //bit shift, divide by 2
+
+		if (((Comparable<E>)object).compareTo((E) storage[mid]) == 0){
+			return mid; //go left
+		} else if (((Comparable<E>)object).compareTo((E) storage[mid]) > 0){
+			return searchForElement(object, lo, mid-1); //go left
+		}
+		return searchForElement(object, mid+1, hi); //go right
+	}
 }

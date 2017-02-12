@@ -3,6 +3,7 @@
  */
 import java.util.*;
 
+import archived.ArrayLinearList;
 import data_structures.*;
 
 public class ArrayLinearTester {
