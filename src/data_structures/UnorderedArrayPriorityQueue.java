@@ -1,14 +1,10 @@
 package data_structures;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
-import data_structures.OrderedArrayPriorityQueue.IteratorHelper;
+public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements PriorityQueue<E> {
 
-public class UnorderedArrayPriorityQueue<E> implements PriorityQueue {
-
-	private Comparable[] storage;
+	private E[] storage;
 	private int currentSize;
 	private int maxSize;
 	private long modCounter;
@@ -16,7 +12,7 @@ public class UnorderedArrayPriorityQueue<E> implements PriorityQueue {
 
 	public UnorderedArrayPriorityQueue(int size){
 		maxSize = size;
-		storage = (Comparable[]) new Object[maxSize];
+		storage = (E[]) new Object[maxSize];
 		currentSize = 0;
 		modCounter = 0;
 		peakPos = 0;
@@ -26,18 +22,18 @@ public class UnorderedArrayPriorityQueue<E> implements PriorityQueue {
 		this(DEFAULT_MAX_CAPACITY);
 	}
 
-	public boolean insert(Comparable obj) {
+	public boolean insert(E obj) {
 		if (isFull()) { return false; }
 		
-		storage[currentSize-- ] = (Comparable) obj; //always add to end, grow towards beginning, order doesnt matter	
+		storage[currentSize-- ] = (E) obj; //always add to end, grow towards beginning, order doesnt matter	
 		modCounter++;
 		return true;
 	}
 
-	public Comparable remove() { //must iterate thru whole list to see which item has highest priority
+	public E remove() { //must iterate thru whole list to see which item has highest priority
 		if(isEmpty()){ return null; }
 		
-		Comparable next = peek();
+		E next = peek();
 		for (int i = peakPos; i < currentSize-1; i++){ //shift down array
 			storage[i] = storage[i+1];
 		}	
@@ -46,21 +42,21 @@ public class UnorderedArrayPriorityQueue<E> implements PriorityQueue {
 		return next;
 	}
 
-	public Comparable peek() {  //unordered must search entire list
+	public E peek() {  //unordered must search entire list
 		if (!isEmpty()){
-			Comparable bestSoFar = (Comparable) storage[0];
+			E bestSoFar = storage[0];
 			for (int i = 1; i < currentSize; i++){
 				if (storage[i].compareTo(bestSoFar) < 0){
 					bestSoFar = storage[i];
 					peakPos = i;
 				}
 			}
-			return (Comparable) bestSoFar;
+			return (E) bestSoFar;
 		}
 		return null;
 	}
 
-	public boolean contains(Comparable obj) { //unordered must search entire list
+	public boolean contains(E obj) { //unordered must search entire list
 		if (!isEmpty()){
 			for (int i = 0; i < currentSize-1; i++){
 				if (storage[i].compareTo(obj) < 0){

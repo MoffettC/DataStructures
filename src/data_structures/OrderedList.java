@@ -1,8 +1,6 @@
 package data_structures;
 
-import java.util.Iterator;
-
-import data_structures.UnorderedList.Node;
+import java.util.*;
 
 public class OrderedList<E extends Comparable <E>> implements Iterable<E> {
 	private Node<E> head, tail;
@@ -12,13 +10,13 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E> {
 	}
 	//only one insert/remove
 
-	public void addFirst(E obj){
+	public void insert(E obj){
 		Node<E> newNode = new Node<E>(obj);
 		newNode.next = head;
 		head = newNode;
 	} 
 	
-	public Comparable removeFirst() {
+	public E remove() {
 		return null;
 	}
 	
