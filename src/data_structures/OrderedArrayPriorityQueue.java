@@ -63,7 +63,7 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 	}
 
 	public boolean contains(Comparable obj) {
-		int check = searchForElement(obj, 0, currentSize-1);
+		int check = searchForElement(obj, 0, currentSize-1); //binary search
 		if (check < 0){
 			return false;
 		}
@@ -134,13 +134,13 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 
 	private int searchForElement(Comparable object, int lo, int hi){
 		if(hi < lo){
-			return -1;
+			return -1; //not found
 		}
 
 		int mid = (lo+hi) >> 1; //bit shift, divide by 2
 
 		if (((Comparable<E>)object).compareTo((E) storage[mid]) == 0){
-			return mid; //go left
+			return mid; 
 		} else if (((Comparable<E>)object).compareTo((E) storage[mid]) > 0){
 			return searchForElement(object, lo, mid-1); //go left
 		}

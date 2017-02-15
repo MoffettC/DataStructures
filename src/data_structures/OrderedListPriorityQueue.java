@@ -2,7 +2,13 @@ package data_structures;
 
 import java.util.Iterator;
 
-public class OrderedListPriorityQueue implements PriorityQueue{
+public class OrderedListPriorityQueue<E> implements PriorityQueue{
+	
+	private OrderedList list;
+	
+	public OrderedListPriorityQueue(){
+		list = new OrderedList();
+	}
 
 	@Override
 	public boolean insert(Comparable object) {
@@ -10,10 +16,8 @@ public class OrderedListPriorityQueue implements PriorityQueue{
 		return false;
 	}
 
-	@Override
 	public Comparable remove() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.removeFirst();
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import data_structures.UnorderedList.Node;
 
-public class OrderedList<E> implements Iterable<E> {
+public class OrderedList<E extends Comparable <E>> implements Iterable<E> {
 	private Node<E> head, tail;
 	
 	public OrderedList(){
@@ -12,7 +12,15 @@ public class OrderedList<E> implements Iterable<E> {
 	}
 	//only one insert/remove
 
+	public void addFirst(E obj){
+		Node<E> newNode = new Node<E>(obj);
+		newNode.next = head;
+		head = newNode;
+	} 
 	
+	public Comparable removeFirst() {
+		return null;
+	}
 	
 	class Node<T>{
 		T data;
@@ -23,11 +31,11 @@ public class OrderedList<E> implements Iterable<E> {
 			next = null;
 		}
 	}
-
-	@Override
+		
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }
 
