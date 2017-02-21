@@ -17,7 +17,7 @@ public class OrderedListPriorityQueue<E> implements PriorityQueue{
 	}
 
 	public Comparable remove() {
-		return list.removeFirst();
+		return list.removeNext();
 	}
 
 	@Override
