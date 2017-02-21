@@ -20,12 +20,20 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 
 	public void insert(E obj){ //search for order, otherwise insert from tail
 		Node<E> newNode = new Node<E>(obj);
-		if (isEmpty()){
+		Node<E> prev = null, current = head;
+		while(current != null && obj.compareTo(current.data) > 0){
+			prev = current;
+			current = current.next;
+		}
+		
+		if(prev == null){
+			newNode.next = current;
 			head = newNode;
 		} else {
-			tail.next = newNode;
-			tail = newNode;
+			prev.next = newNode;
+			newNode.next = current;
 		}
+		
 		modCounter++;
 		currentSize++;
 	} 
@@ -34,9 +42,6 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 		if (!isEmpty()){
 			Node<E> first = head;
 			head = first.next;
-			if (head == null){
-				tail = null; //if head is pointing to null, then list is empty and tail points to null
-			}
 			return (E) first;
 		} else {
 			return null;
@@ -76,7 +81,7 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 	}
 
 	public void clear(){
-		head = tail = null;
+		head = null;
 		modCounter = 0;
 		currentSize = 0;
 	}

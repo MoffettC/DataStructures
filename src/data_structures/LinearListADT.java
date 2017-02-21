@@ -2,7 +2,7 @@
 	cssc0937
  */
 
-package archived;
+package data_structures;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 

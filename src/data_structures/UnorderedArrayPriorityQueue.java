@@ -33,8 +33,7 @@ public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements Pri
 	}
 
 	public E remove() { //must iterate thru whole list to see which item has highest priority
-		if(isEmpty()){ return null; }
-		
+		if(isEmpty()){ return null; }	
 		E next = peek();
 		for (int i = peakPos; i < currentSize-1; i++){ //shift down array
 			storage[i] = storage[i+1];
@@ -76,7 +75,6 @@ public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements Pri
 	public void clear() {
 		currentSize = 0;		
 	}
-
 
 	public boolean isEmpty() {
 		return currentSize == 0;

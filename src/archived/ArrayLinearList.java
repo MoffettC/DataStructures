@@ -6,6 +6,8 @@ package archived;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import data_structures.LinearListADT;
+
 public class ArrayLinearList<E> implements LinearListADT<E>{
 	private int currentSize = 0;
 	private int currentCapacity = DEFAULT_MAX_CAPACITY;

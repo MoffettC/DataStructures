@@ -7,9 +7,9 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
+public class OrderedArrayPriorityQueue<E extends Comparable<E>> implements PriorityQueue<E>{
 
-	private Comparable[] storage;
+	private E[] storage;
 	private int currentSize;
 	private int maxSize;
 	private long modCounter;
@@ -17,7 +17,7 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 
 	public OrderedArrayPriorityQueue(int size){
 		maxSize = size;
-		storage = (Comparable[]) new Object[maxSize];
+		storage = (E[]) new Object[maxSize];
 		currentSize = 0;
 		modCounter = 0;
 		isFound = false;
@@ -27,7 +27,7 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 		this(DEFAULT_MAX_CAPACITY);
 	}
 
-	public boolean insert(Comparable obj) { //FIFO starting at end of array going back
+	public boolean insert(E obj) { //FIFO starting at end of array going back
 		if (isFull()){
 			return false;
 		}
@@ -35,34 +35,34 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 		for (int i = currentSize-1; i>=where; i--){
 			storage[i+1] = storage[i];
 		}
-		storage[where] = (Comparable) obj;
+		storage[where] = (E) obj;
 		currentSize++;
 		modCounter++;
 		return true;
 	}
 
-	public Comparable remove() { //remove from end of array, FIFO
+	public E remove() { //remove from end of array, FIFO
 		if(isEmpty()){
 			return null;
 		}
 		modCounter++;
-		return (Comparable) storage[--currentSize];
+		return (E) storage[--currentSize];
 	}
 
-	public Comparable peek() { //change to binary search
+	public E peek() { //change to binary search
 		if (!isEmpty()){
-			Comparable bestSoFar = (Comparable) storage[0];
+			E bestSoFar = (E) storage[0];
 			for (int i = 1; i < currentSize; i++){
 				if (storage[i].compareTo(bestSoFar) < 0){
-					bestSoFar = storage[i];
+					bestSoFar = (E) storage[i];
 				}
 			}
-			return (Comparable) bestSoFar;
+			return bestSoFar;
 		}
 		return null;
 	}
 
-	public boolean contains(Comparable obj) {
+	public boolean contains(E obj) {
 		int check = searchForElement(obj, 0, currentSize-1); //binary search
 		if (check < 0){
 			return false;
@@ -119,29 +119,29 @@ public class OrderedArrayPriorityQueue<E> implements PriorityQueue{
 		}
 	}
 
-	private int findInsertionPoint(Comparable object, int lo, int hi){
+	private int findInsertionPoint(E object, int lo, int hi){
 		if(hi < lo){
 			return lo;
 		}
 
 		int mid = (lo+hi) >> 1;
 
-		if (((Comparable<E>)object).compareTo((E) storage[mid]) >= 0){
+		if ((object).compareTo((E) storage[mid]) >= 0){
 			return findInsertionPoint(object, lo, mid-1); //go left
 		}
 		return findInsertionPoint(object, mid+1, hi); //go right
 	}
 
-	private int searchForElement(Comparable object, int lo, int hi){
+	private int searchForElement(E object, int lo, int hi){
 		if(hi < lo){
 			return -1; //not found
 		}
 
 		int mid = (lo+hi) >> 1; //bit shift, divide by 2
 
-		if (((Comparable<E>)object).compareTo((E) storage[mid]) == 0){
+		if ((object).compareTo((E) storage[mid]) == 0){
 			return mid; 
-		} else if (((Comparable<E>)object).compareTo((E) storage[mid]) > 0){
+		} else if ((object).compareTo((E) storage[mid]) > 0){
 			return searchForElement(object, lo, mid-1); //go left
 		}
 		return searchForElement(object, mid+1, hi); //go right
