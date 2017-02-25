@@ -1,8 +1,8 @@
 package data_structures;
 
-import java.util.Iterator;
+import java.util.*;
 
-public class OrderedListPriorityQueue<E> implements PriorityQueue{
+public class OrderedListPriorityQueue<E extends Comparable <E>> implements PriorityQueue<E>{
 	
 	private OrderedList list;
 	
@@ -10,56 +10,41 @@ public class OrderedListPriorityQueue<E> implements PriorityQueue{
 		list = new OrderedList();
 	}
 
-	@Override
-	public boolean insert(Comparable object) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean insert(E object) {
+		list.insert(object);
+		return true; //always will be able to insert??
 	}
 
-	public Comparable remove() {
-		return list.removeNext();
+	public E remove() {
+		return (E) list.removeNext();
 	}
 
-	@Override
-	public Comparable peek() {
-		// TODO Auto-generated method stub
-		return null;
+	public E peek() {
+		return (E) list.findMin();
 	}
 
-	@Override
-	public boolean contains(Comparable obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean contains(E obj) {
+		return list.contains(obj);
 	}
 
-	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return list.size();
 	}
 
-	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		list.clear();
 	}
 
-	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return list.isEmpty();
 	}
 
-	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
-		return false;
+		return true; //never full, linked list
 	}
 
-	@Override
 	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.iterator();
 	}
 
 }

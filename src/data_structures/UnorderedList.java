@@ -1,8 +1,6 @@
 package data_structures;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 	private Node<E> head, tail;
@@ -72,6 +70,7 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 				tail = null; //if head is pointing to null, then list is empty and tail points to null
 			}
 			currentSize--;
+			modCounter++;
 			return first.data;
 		} else {
 			return null;
@@ -94,6 +93,7 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 				tail = prevNode;
 			}							
 			currentSize--;
+			modCounter++;
 			return current.data;
 		}
 		return null;
@@ -107,6 +107,7 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 			while (current != null){			
 				if (current.data.compareTo(obj) == 0){				
 					currentSize--;
+					modCounter++;
 					if (prevNode == null){ 	//if from head, or last element
 						head = tail = current.next; 
 					} else if (current.next == null){
@@ -120,10 +121,8 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 				prevNode = current;
 				current = current.next;
 			}
-			return null;
-		} else {
-			return null;	
-		}
+		} 
+		return null;	
 	}
 
 	public int find(E obj){

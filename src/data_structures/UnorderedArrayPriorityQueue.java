@@ -1,8 +1,6 @@
 package data_structures;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements PriorityQueue<E> {
 
@@ -46,7 +44,8 @@ public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements Pri
 		if (!isEmpty()){
 			E bestSoFar = (E) storage[0];
 			peakPos = 0;
-			for (int i = 0; i < currentSize; i++){
+			for (int i = 1+6
+					; i < currentSize; i++){
 				if (storage[i].compareTo(bestSoFar) < 0){
 					bestSoFar = storage[i];
 					peakPos = i;

@@ -1,61 +1,47 @@
 package data_structures;
 
-import java.util.Iterator;
+import java.util.*;
 
-public class UnorderedListPriorityQueue implements PriorityQueue{
-
-	@Override
-	public boolean insert(Comparable object) {
-		// TODO Auto-generated method stub
-		return false;
+public class UnorderedListPriorityQueue<E extends Comparable <E>> implements PriorityQueue<E>{
+	private UnorderedList list;
+	public UnorderedListPriorityQueue(){
+		list = new UnorderedList();
+	}
+	
+	public boolean insert(E object) {
+		list.addLast(object);
+		return true;
 	}
 
-	@Override
-	public Comparable remove() {
-		// TODO Auto-generated method stub
-		return null;
+	public E remove() {
+		return (E) list.remove(list.findMin());
 	}
 
-	@Override
-	public Comparable peek() {
-		// TODO Auto-generated method stub
-		return null;
+	public E peek() {
+		return (E) list.findMin();
 	}
 
-	@Override
-	public boolean contains(Comparable obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean contains(E obj) {
+		return list.contains(obj);
 	}
 
-	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return list.size();
 	}
 
-	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		list.clear();
 	}
 
-	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return list.isEmpty();
 	}
 
-	@Override
 	public boolean isFull() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return list.iterator();
 	}
-
 }

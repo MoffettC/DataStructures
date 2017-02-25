@@ -1,11 +1,6 @@
 package data_structures;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import data_structures.UnorderedList.IteratorHelper;
-import data_structures.UnorderedList.Node;
+import java.util.*;
 
 public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 	private Node<E> head;
@@ -22,19 +17,17 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 	public void insert(E obj){ //search for order, otherwise insert from tail
 		Node<E> newNode = new Node<E>(obj);
 		Node<E> prev = null, current = head;
-		while(current != null && obj.compareTo(current.data) > 0){
+		while(current != null && obj.compareTo(current.data) >= 0){
 			prev = current;
 			current = current.next;
-		}
-		
+		}	
 		if(prev == null){
 			newNode.next = current;
 			head = newNode;
 		} else {
 			prev.next = newNode;
 			newNode.next = current;
-		}
-		
+		}	
 		modCounter++;
 		currentSize++;
 	} 
@@ -43,7 +36,9 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 		if (!isEmpty()){
 			Node<E> first = head;
 			head = first.next;
-			return (E) first;
+			currentSize--;
+			modCounter++;
+			return (E) first.data;
 		} else {
 			return null;
 		}
@@ -174,7 +169,7 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 			if (modCheck != modCounter){
 				throw new ConcurrentModificationException();
 			}
-			return removeNext(); //remove first? first is the 'next'?
+			return get(itrIndex++); 
 		}
 
 		public void remove(){
