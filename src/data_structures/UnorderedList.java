@@ -4,8 +4,6 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import data_structures.LinearLinkedList.Node;
-
 public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 	private Node<E> head, tail;
 	private int currentSize;

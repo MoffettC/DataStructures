@@ -14,7 +14,7 @@ public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements Pri
 
 	public UnorderedArrayPriorityQueue(int size){
 		maxSize = size;
-		storage = (E[]) new Object[maxSize];
+		storage = (E[]) new Comparable[maxSize];
 		currentSize = 0;
 		modCounter = 0;
 		peakPos = 0;
@@ -25,9 +25,8 @@ public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements Pri
 	}
 
 	public boolean insert(E obj) {
-		if (isFull()) { return false; }
-		
-		storage[currentSize-- ] = (E) obj; //always add to end, grow towards beginning, order doesnt matter	
+		if (isFull()) { return false; }	
+		storage[currentSize++] = (E) obj; //always add to end, grow towards beginning, order doesnt matter
 		modCounter++;
 		return true;
 	}
@@ -37,16 +36,17 @@ public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements Pri
 		E next = peek();
 		for (int i = peakPos; i < currentSize-1; i++){ //shift down array
 			storage[i] = storage[i+1];
-		}	
+		}
+		currentSize--;
 		modCounter++;
-		
 		return next;
 	}
 
 	public E peek() {  //unordered must search entire list
 		if (!isEmpty()){
-			E bestSoFar = storage[0];
-			for (int i = 1; i < currentSize; i++){
+			E bestSoFar = (E) storage[0];
+			peakPos = 0;
+			for (int i = 0; i < currentSize; i++){
 				if (storage[i].compareTo(bestSoFar) < 0){
 					bestSoFar = storage[i];
 					peakPos = i;

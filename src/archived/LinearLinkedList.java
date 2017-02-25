@@ -2,7 +2,7 @@
 	cssc0937
  */
 
-package data_structures;
+package archived;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

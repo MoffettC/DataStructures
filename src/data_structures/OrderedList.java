@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import data_structures.UnorderedList.IteratorHelper;
+import data_structures.UnorderedList.Node;
 
 public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 	private Node<E> head;
@@ -68,8 +69,61 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 		return -1; //not found
 	}
 
-	public boolean contains(E obj){
-		return false;
+	public E findMin(){
+		if (head == null) return null;
+		E best = head.data;
+		Node<E> current = head.next;
+		while (current != null){
+			if (current.data.compareTo(best) < 0){
+				best = current.data;
+			}
+			current = current.next;
+		}
+		return best;
+	}
+
+	public E get(int location) {
+		if (location < currentSize && location >= 0 && !isEmpty()){
+			Node<E> current = head;
+			for (int i = 0; i < location; i++){
+				current = current.next;
+			}
+			return current.data;
+		} else {
+			throw new RuntimeException("Index is not within contiguous list");
+		}	
+	}
+
+	public boolean contains(E obj) {
+		if (!isEmpty()){
+			Node<E> current = head;
+			while (current != null){
+				if (current.data.compareTo(obj) == 0){
+					return true;
+				}
+				current = current.next;
+			}
+			return false;
+		} else {
+			return false;
+		}
+	}
+
+	public int locate(E obj) {
+		if (!isEmpty()){
+			int counter = 0;
+			Node<E> current = head;
+			while (current != null){
+				if (current.data.compareTo(obj) == 0){
+					return counter; 
+				}
+				counter++;
+				current = current.next;
+			}
+			return -1;
+		} else {
+			return -1;
+		}		
 	}
 	
 	public boolean isEmpty(){

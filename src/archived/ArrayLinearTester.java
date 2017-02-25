@@ -1,9 +1,9 @@
+package archived;
 /*  Chris Moffett
 	cssc0937
  */
 import java.util.*;
 
-import archived.ArrayLinearList;
 import data_structures.*;
 
 public class ArrayLinearTester {

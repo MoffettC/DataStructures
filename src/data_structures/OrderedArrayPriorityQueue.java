@@ -17,7 +17,7 @@ public class OrderedArrayPriorityQueue<E extends Comparable<E>> implements Prior
 
 	public OrderedArrayPriorityQueue(int size){
 		maxSize = size;
-		storage = (E[]) new Object[maxSize];
+		storage = (E[]) new Comparable[maxSize];
 		currentSize = 0;
 		modCounter = 0;
 		isFound = false;
@@ -51,8 +51,8 @@ public class OrderedArrayPriorityQueue<E extends Comparable<E>> implements Prior
 
 	public E peek() { //change to binary search
 		if (!isEmpty()){
-			E bestSoFar = (E) storage[0];
-			for (int i = 1; i < currentSize; i++){
+			E bestSoFar = (E) storage[currentSize-1];
+			for (int i = currentSize-1; i >= 0; i--){
 				if (storage[i].compareTo(bestSoFar) < 0){
 					bestSoFar = (E) storage[i];
 				}
