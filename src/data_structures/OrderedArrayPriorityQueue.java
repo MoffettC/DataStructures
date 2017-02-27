@@ -3,7 +3,9 @@
  */
 package data_structures;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class OrderedArrayPriorityQueue<E extends Comparable<E>> implements PriorityQueue<E>{
 

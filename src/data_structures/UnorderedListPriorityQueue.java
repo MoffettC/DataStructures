@@ -1,6 +1,9 @@
+/*  Chris Moffett
+	cssc0937
+ */
 package data_structures;
 
-import java.util.*;
+import java.util.Iterator;
 
 public class UnorderedListPriorityQueue<E extends Comparable <E>> implements PriorityQueue<E>{
 	private UnorderedList list;

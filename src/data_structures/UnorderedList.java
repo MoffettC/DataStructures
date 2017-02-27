@@ -1,6 +1,11 @@
+/*  Chris Moffett
+	cssc0937
+ */
 package data_structures;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 	private Node<E> head, tail;

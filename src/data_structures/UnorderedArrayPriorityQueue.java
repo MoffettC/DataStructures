@@ -1,6 +1,11 @@
+/*  Chris Moffett
+	cssc0937
+ */
 package data_structures;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements PriorityQueue<E> {
 
