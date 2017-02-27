@@ -4,19 +4,19 @@ public class ArrayPriorityQueOrderedTester {
 
 	private int [] array;
     private static final int SIZE = 100;
-    private UnorderedListPriorityQueue<Integer> pq;
-    private UnorderedListPriorityQueue<PrioritizedItem> pq2;    
+    private UnorderedArrayPriorityQueue<Integer> pq;
+    private UnorderedArrayPriorityQueue<PrioritizedItem> pq2;    
     
     public ArrayPriorityQueOrderedTester() {
         array = new int[SIZE];
         //pq = new OrderedArrayPriorityQueue<Integer>(SIZE);
-        //pq = new UnorderedArrayPriorityQueue<Integer>(SIZE);
+        pq = new UnorderedArrayPriorityQueue<Integer>(SIZE);
         //pq = new OrderedListPriorityQueue<Integer>();
-        pq = new UnorderedListPriorityQueue<Integer>();        
+        //pq = new UnorderedListPriorityQueue<Integer>();        
         //pq2 = new OrderedArrayPriorityQueue<PrioritizedItem>(SIZE);
-        //pq2 = new UnorderedArrayPriorityQueue<PrioritizedItem>(SIZE);
+        pq2 = new UnorderedArrayPriorityQueue<PrioritizedItem>(SIZE);
         //pq2 = new OrderedListPriorityQueue<PrioritizedItem>();
-        pq2 = new UnorderedListPriorityQueue<PrioritizedItem>();                        
+        //pq2 = new UnorderedListPriorityQueue<PrioritizedItem>();                        
         initArray();
         test1();
         test2();
@@ -25,8 +25,10 @@ public class ArrayPriorityQueOrderedTester {
         }
         
     private void initArray() {
-        for(int i=0; i < SIZE; i++)
+        for(int i=0; i < SIZE; i++){
             array[i] = i+1;
+            
+        }
         // now scramble array order
         for(int i=0; i < SIZE; i++) {
             int idx = (int) (SIZE*Math.random());
@@ -41,26 +43,33 @@ public class ArrayPriorityQueOrderedTester {
         for(Integer i : pq)
             throw new RuntimeException("Failed test #1, value returned in empty iterator");
         
-        for(int i=0; i < SIZE; i++) 
-            if(!pq.insert(array[i]))
+        for(int i=0; i < SIZE; i++) {
+            if(!pq.insert(array[i])){
                 throw new RuntimeException("Failed test #1");
+            }
+            //System.out.println(array[i]);
+        }
 //////////////////////////////////////////////////////////////////////////////                
 //  Comment this block for linked list based implementations         
-       if(!pq.isFull())
-            //throw new RuntimeException("Failed test #1, isFull reports false, but pq should be full");       
+        if(!pq.isFull())
+            throw new RuntimeException("Failed test #1, isFull reports false, but pq should be full");       
         //try to exceed the capacity
         if(pq.insert(0))
-            //throw new RuntimeException("Failed test1, exceeded capacity");
+            throw new RuntimeException("Failed test1, exceeded capacity");
 //////////////////////////////////////////////////////////////////////////////       
         System.out.println("Passed test #1, simple insert");
+        System.out.println("Peek Test: " + pq.peek());
+        System.out.println("Contains 1: " + pq.contains(1));
+        System.out.println("Contains 200: " + pq.contains(200));
+        System.out.println("Size: " + pq.size());
         }
         
-    private void test2() {
+    private void test2() { 	
         for(int i=0; i < SIZE; i++){
         	int test = pq.remove();
         	System.out.println(test);
             if(test != (i+1)){
-                throw new RuntimeException("Failed test #2, out of order removal");
+                //throw new RuntimeException("Failed test #2, out of order removal");
             }
         }
         if(pq.remove() != null)

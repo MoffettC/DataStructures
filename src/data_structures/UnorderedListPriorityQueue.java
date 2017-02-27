@@ -38,7 +38,7 @@ public class UnorderedListPriorityQueue<E extends Comparable <E>> implements Pri
 	}
 
 	public boolean isFull() {
-		return false;
+		return false; //never full LL
 	}
 
 	public Iterator iterator() {
