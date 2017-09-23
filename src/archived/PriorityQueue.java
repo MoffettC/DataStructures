@@ -9,7 +9,7 @@
     interface.
 */   
 
-package data_structures;
+package archived;
 
 import java.util.Iterator;
 

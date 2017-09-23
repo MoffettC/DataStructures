@@ -1,3 +1,4 @@
+package archived;
 /*  Timer.java
     A sample class to assist in performing empirical timing tests
     for your project #2.    

@@ -1,6 +1,11 @@
-package data_structures;
+/*  Chris Moffett
+	cssc0937
+ */
+package archived;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 	private Node<E> head;
@@ -98,10 +103,8 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 				}
 				current = current.next;
 			}
+		} 
 			return false;
-		} else {
-			return false;
-		}
 	}
 
 	public int locate(E obj) {
@@ -114,11 +117,9 @@ public class OrderedList<E extends Comparable <E>> implements Iterable<E>{
 				}
 				counter++;
 				current = current.next;
-			}
-			return -1;
-		} else {
-			return -1;
-		}		
+			} 
+		} 
+		return -1;	
 	}
 	
 	public boolean isEmpty(){

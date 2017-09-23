@@ -17,7 +17,6 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 		currentSize = 0;
 		modCounter = 0;
 	}
-	//mulitple types of inserts/removes
 
 	public void addFirst(E obj){
 		Node<E> newNode = new Node<E>(obj);
@@ -130,19 +129,19 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 		return null;	
 	}
 
-	public int find(E obj){
+	public E find(E obj){
 		if (!isEmpty()){
 			int count = 0;	
 			Node<E> current = head;
 			while (current != null){
 				if (current.data.compareTo(obj) == 0){
-					return count;
+					return current.data;
 				}
 				count++;
 				current = current.next;
 			}	
 		}
-		return -1; //not found
+		return null; //not found
 	}
 
 	public E findMin(){
@@ -158,6 +157,36 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 		return best;
 	}
 
+	public E removeMin(){
+		if (isEmpty()) return null;
+		Node<E> prevNode = null, prevBest = null, currentBest = head;
+		E best = head.data;
+		Node<E> current = head.next;
+		prevNode = head;
+		while (current != null){
+			if (current.data.compareTo(best) < 0){
+				prevBest = prevNode;
+				currentBest = current;
+				best = current.data;
+			}
+			prevNode = current;
+			current = current.next;
+		}
+		if (prevNode == null){
+			head = tail = current; //last one in list
+		} else if (prevBest == null){ //if first one is best
+			head = currentBest.next;
+		} else if (currentBest.next == null){
+			prevBest.next = currentBest.next; //if last one is best
+			tail = prevBest;
+		} else {
+			prevBest.next = currentBest.next;
+		}
+		modCounter++;
+		currentSize--;
+		return best;
+	}
+	
 	public E get(int location) {
 		if (location < currentSize && location >= 0 && !isEmpty()){
 			Node<E> current = head;
@@ -179,10 +208,8 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 				}
 				current = current.next;
 			}
-			return false;
-		} else {
-			return false;
-		}
+		} 
+		return false;
 	}
 
 	public int locate(E obj) {
@@ -196,10 +223,8 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 				counter++;
 				current = current.next;
 			}
+		} 
 			return -1;
-		} else {
-			return -1;
-		}		
 	}
 
 	public boolean isEmpty(){
@@ -250,7 +275,7 @@ public class UnorderedList<E extends Comparable <E>> implements Iterable<E> {
 			if (modCheck != modCounter){
 				throw new ConcurrentModificationException();
 			}
-			return get(itrIndex++);  //remove first? first is the 'next'?
+			return get(itrIndex++); 
 		}
 
 		public void remove(){

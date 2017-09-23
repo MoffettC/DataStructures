@@ -1,7 +1,7 @@
 /*  Chris Moffett
 	cssc0937
  */
-package data_structures;
+package archived;
 
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -63,7 +63,7 @@ public class UnorderedArrayPriorityQueue<E extends Comparable<E>> implements Pri
 	public boolean contains(E obj) { //unordered must search entire list
 		if (!isEmpty()){
 			for (int i = 0; i < currentSize-1; i++){
-				if (storage[i].compareTo(obj) < 0){
+				if (storage[i].compareTo(obj) == 0){
 					return true;
 				}
 			}
